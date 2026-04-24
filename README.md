@@ -1,2 +1,2 @@
-# DotFiles
-Just in case I need them
+# dotFiles
+just in case I need them
