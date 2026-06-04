@@ -6,10 +6,6 @@ log() { echo "[$(date '+%H:%M:%S')] $*"; }
 
 WORKTREES_BASE=~/Work/worktrees
 
-log "Restarting Docker to clear stale port allocations..."
-sudo systemctl restart docker
-log "Docker restarted"
-
 # Find all worktree roots (identified by .env.worktree)
 while IFS= read -r env_file; do
   WORKTREE=$(dirname "$env_file")
@@ -55,6 +51,8 @@ while IFS= read -r env_file; do
   tmux new-window -t "$NAME" -n Claude
   tmux send-keys -t "$NAME:Claude" "cd $WORKTREE" C-m
   tmux send-keys -t "$NAME:Claude" "claude" C-m
+
+  tmux select-window -t "$NAME:0"
 
   log "Session '$NAME' created"
 

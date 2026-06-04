@@ -6,6 +6,9 @@ SESSION="work-session"
 echo "Restarting Docker..."
 sudo systemctl restart docker
 echo "Docker restarted"
+docker rm -f $(docker ps -aq) 2>/dev/null || true
+docker system prune -af --volumes
+docker volume rm $(docker volume ls -q) 2>/dev/null || true
 
 # Create a single detached tmux session
 tmux new-session -d -s "$SESSION"
@@ -26,5 +29,10 @@ tmux select-pane -t "$SESSION:0.0"
 tmux split-window -v -t "$SESSION"
 tmux send-keys -t "$SESSION" "gh dash" C-m
 
-# Attach
+# Window 2: shortcut-helper
+tmux new-window -t "$SESSION"
+tmux send-keys -t "$SESSION" "cd ~/Work/shortcut-helper && pnpm start" C-m
+
+# Attach to window 1
+tmux select-window -t "$SESSION:0"
 tmux attach -t "$SESSION"

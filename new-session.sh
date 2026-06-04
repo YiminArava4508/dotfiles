@@ -38,7 +38,7 @@ log "Tmux session created"
 # Pane 1: docker compose (fresh start with volume wipe)
 # Source .env.worktree explicitly to ensure unique COMPOSE_PROJECT_NAME and ports
 # are set regardless of whether direnv is active in the tmux pane
-tmux send-keys -t "$NAME" "cd $WORKTREE && set -a && source .env.worktree && source service-api-go/.env.local && set +a && cd service-api-go && docker compose down -v && docker compose up --build -d" C-m
+tmux send-keys -t "$NAME" "cd $WORKTREE && set -a && source .env.worktree && source service-api-go/.env.local && set +a && cd service-api-go && docker rm -f \$(docker ps -aq) 2>/dev/null || true && docker system prune -af --volumes && docker volume rm \$(docker volume ls -q) 2>/dev/null || true && docker compose down -v && docker compose up --build -d" C-m
 
 # Pane 2: Go API via air (wait for docker)
 tmux split-window -h -t "$NAME"
@@ -68,6 +68,8 @@ tmux send-keys -t "$NAME:Claude" "cd $WORKTREE" C-m
 tmux send-keys -t "$NAME:Claude" "claude" C-m
 
 log "All windows set up. Switching to session '$NAME'"
+
+tmux select-window -t "$NAME:0"
 
 # Switch if already in tmux, otherwise attach
 if [ -n "$TMUX" ]; then
