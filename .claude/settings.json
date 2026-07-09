@@ -60,7 +60,29 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -n \"$TMUX_PANE\" ] && tmux set-option -w -t \"$TMUX_PANE\" @claude_status \"#[fg=yellow]✳\" 2>/dev/null; true",
+            "command": "~/.claude/tmux-status.sh prompt",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/tmux-status.sh agent-start",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/tmux-status.sh agent-stop",
             "async": true
           }
         ]
@@ -71,7 +93,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -n \"$TMUX_PANE\" ] && tmux set-option -w -t \"$TMUX_PANE\" @claude_status \"#[fg=green]✔\" 2>/dev/null; true",
+            "command": "~/.claude/tmux-status.sh stop",
             "async": true
           }
         ]
@@ -82,7 +104,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -n \"$TMUX_PANE\" ] && tmux set-option -w -t \"$TMUX_PANE\" @claude_status \"#[fg=red]?\" 2>/dev/null; true",
+            "command": "~/.claude/tmux-status.sh notify",
             "async": true
           }
         ]
@@ -93,7 +115,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -n \"$TMUX_PANE\" ] && tmux set-option -w -t \"$TMUX_PANE\" -u @claude_status 2>/dev/null; true"
+            "command": "~/.claude/tmux-status.sh end"
           }
         ]
       }
