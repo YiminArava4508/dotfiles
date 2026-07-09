@@ -52,6 +52,17 @@ tmux send-keys -t "$NAME" "cd $WORKTREE && set -a && source .env.worktree && set
 tmux split-window -v -t "$NAME:0.0"
 tmux send-keys -t "$NAME" "cd $WORKTREE" C-m
 
+# Pane 5: LangServe (Python 3.13 venv via mise + uvicorn)
+# System python is too new for the pinned native deps, so pin 3.13 for poetry.
+# GROQ_API_KEY is intentionally empty; POSTGRESQL_URI points at the worktree's DB.
+# Split the active pane (still in the main stack window) rather than a hardcoded
+# "$NAME:0" target — base-index/pane-base-index are 1 here, so window 0 doesn't exist.
+tmux split-window -v -t "$NAME"
+tmux send-keys -t "$NAME" "cd $WORKTREE && set -a && source .env.worktree && set +a && cd api-langserve && export GROQ_API_KEY=\"\" && export POSTGRESQL_URI=\"\$DATABASE_URL_APP\" && mise install python@3.13 && poetry env use \"\$(mise where python@3.13)/bin/python\" && poetry install && poetry run uvicorn app.server:app --host 0.0.0.0 --port 8000" C-m
+
+# Even out the panes now that there are five
+tmux select-layout -t "$NAME" tiled
+
 # Frontend window
 tmux new-window -t "$NAME" -n Frontend
 tmux send-keys -t "$NAME:Frontend" "cd $WORKTREE/react-ui" C-m
