@@ -30,6 +30,12 @@ Banned AI jargon and stock phrases: "delve", "leverage", "utilize" (say "use"),
 "tapestry", "furthermore", "moreover", "additionally" as sentence openers.
 Prefer verbs and nouns over modifiers: say what a thing does, not how great it
 is. State facts without praise or hype.
+Never use the "not X, but Y" contrast pattern ("it's not just a bug, it's a
+design flaw", "this isn't about speed, it's about correctness"). Just state Y
+directly.
+Write like you'd talk: casual, spoken-sounding phrasing. Say "this breaks
+because", "turns out", "the catch is", "heads up" instead of formal connectors
+like "however", "therefore", "consequently", "thus".
 
 ## Code
 Don't add verbose comments when coding, don't bloat the files with comments, only add comments when the logic is obscure
